@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Список кімнат{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Доступні кімнати</h1>
+    <p class="page-subtitle">Оберіть кімнату та забронюйте прямо зараз</p>
+</div>
+
+<div class="rooms-grid">
+    {% for room in rooms %}
+    <div class="room-card {% if not room.is_active %}room-card--inactive{% endif %}">
+        <div class="room-card__header">
+            <span class="room-badge room-badge--{{ room.room_type }}">
+                {% if room.room_type == 'single' %}Одномісний
+                {% elif room.room_type == 'double' %}Двомісний
+                {% elif room.room_type == 'suite' %}Люкс
+                {% elif room.room_type == 'family' %}Сімейний
+                {% endif %}
+            </span>
+            {% if not room.is_active %}
+            <span class="room-badge room-badge--unavailable">Недоступна</span>
+            {% endif %}
+        </div>
+
+        <div class="room-card__body">
+            <h2 class="room-card__name">{{ room.name }}</h2>
+
+            <div class="room-card__meta">
+                <div class="room-meta-item">
+                    <span class="meta-icon">&#128101;</span>
+                    <span>{{ room.capacity }} особ(и)</span>
+                </div>
+                <div class="room-meta-item">
+                    <span class="meta-icon">&#127970;</span>
+                    <span>{{ room.floor }} поверх</span>
+                </div>
+            </div>
+
+            {% if room.description %}
+            <p class="room-card__description">{{ room.description }}</p>
+            {% endif %}
+
+            <div class="room-amenities">
+                {% if room.has_wifi %}
+                <span class="amenity amenity--on">Wi-Fi</span>
+                {% endif %}
+                {% if room.has_tv %}
+                <span class="amenity amenity--on">ТВ</span>
+                {% endif %}
+                {% if room.has_air_conditioning %}
+                <span class="amenity amenity--on">Кондиціонер</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="room-card__footer">
+            <div class="room-price">
+                <span class="price-amount">{{ room.price_per_day }}</span>
+                <span class="price-unit"> грн/ніч</span>
+            </div>
+            {% if room.is_active %}
+            <a href="{% url 'booking_create' room.pk %}" class="btn btn-primary">Забронювати</a>
+            {% else %}
+            <button class="btn btn-disabled" disabled>Недоступна</button>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state">
+        <p>Кімнати не знайдено.</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Готель{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a href="{% url 'room_list' %}" class="navbar-brand">Готель воімя Єгор</a>
+            <ul class="navbar-links">
+                <li><a href="{% url 'room_list' %}">Кімнати</a></li>
+                <li><a href="{% url 'booking_list' %}">Бронювання</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>© 2026 Готель. Всі права захищені.</p>
+    </footer>
+
+</body>
+</html>

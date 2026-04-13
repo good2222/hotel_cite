@@ -1,0 +1,94 @@
+# написано в 05.04.2026 14.01 (дуже довго)
+
+{% extends 'base.html' %}
+
+{% block title %}Бронювання кімнати{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Бронювання кімнати</h1>
+    <p class="page-subtitle">Заповніть форму для бронювання</p>
+</div>
+
+<div class="form-layout">
+
+    <div class="room-summary">
+        <h2>{{ room.name }}</h2>
+        <p class="room-type-label">{{ room.get_room_type_display }}</p>
+        <div class="summary-details">
+            <div class="summary-row">
+                <span>Місткість</span>
+                <strong>{{ room.capacity }} особ(и)</strong>
+            </div>
+            <div class="summary-row">
+                <span>Поверх</span>
+                <strong>{{ room.floor }}</strong>
+            </div>
+            <div class="summary-row price-row">
+                <span>Ціна за ніч</span>
+                <strong class="price-highlight">{{ room.price_per_day }} грн</strong>
+            </div>
+        </div>
+        {% if room.description %}
+        <p class="room-desc">{{ room.description }}</p>
+        {% endif %}
+        <a href="{% url 'room_list' %}" class="btn btn-secondary">&#8592; Назад до кімнат</a>
+    </div>
+
+    <div class="form-card">
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="room" value="{{ room.pk }}">
+
+            <h3 class="form-section-title">Дати бронювання</h3>
+            <div class="form-group">
+                <label for="id_start_date">Дата заїзду</label>
+                <input type="date" name="start_date" id="id_start_date" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="id_end_date">Дата виїзду</label>
+                <input type="date" name="end_date" id="id_end_date" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="id_notes">Примітки</label>
+                <textarea name="notes" id="id_notes" class="form-control" rows="3" placeholder="Побажання, особливі запити..."></textarea>
+            </div>
+
+            <h3 class="form-section-title">Контактна інформація</h3>
+            <div class="form-group">
+                <label for="id_full_name">Повне ім'я *</label>
+                <input type="text" name="full_name" id="id_full_name" class="form-control" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_email">Email *</label>
+                    <input type="email" name="email" id="id_email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="id_phone">Телефон *</label>
+                    <input type="text" name="phone" id="id_phone" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_city">Місто</label>
+                    <input type="text" name="city" id="id_city" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="id_country">Країна</label>
+                    <input type="text" name="country" id="id_country" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="id_passport">Паспорт</label>
+                <input type="text" name="passport" id="id_passport" class="form-control">
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-large">Підтвердити бронювання</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
